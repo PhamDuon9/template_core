@@ -1,0 +1,78 @@
+﻿<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+
+<body>
+    <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto;">
+        <tbody>
+            <tr>
+                <td>
+                    <p style="text-align: center;">
+                        <strong style="font-size: larger; color: #19498a;">THANH TOÁN & ĐĂNG KÝ THÀNH CÔNG</strong>
+                        <br />
+                        <strong>
+                            Chúc mừng Thí sinh đã hoàn tất việc thanh toán lệ phí và đăng ký môn thi AP thành công<br />
+                            IIG Việt Nam xin thông báo thông tin đăng ký của Thí sinh như sau:
+                        </strong>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td>Họ và tên</td>
+                                <td>@Model.FullName</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày/tháng/năm sinh</td>
+                                <td>
+                                    @Model.Birthday
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Mã giao dịch</td>
+                                <td>@Model.Trans</td>
+                            </tr>
+                            <tr>
+                                <td>Thời gian thanh toán</td>
+                                <td>@Model.DateTimePaid</td>
+                            </tr>
+
+                            <tr style="text-align: left;">
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Tên bài thi</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; border-left: none; padding: 8px;">Mã bài thi</th>
+                                <th style="border: 1px solid #dddddd; border-left: none; text-align: left; padding: 8px;">Lịch thi</th>
+                            </tr>
+                            @Model.TestInfo
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        **Thí sinh lưu ý:<br />
+                        - Vui lòng đọc kỹ các thông tin về Quy định và Hướng dẫn dành cho thí sinh kỳ thi AP  <a href="https://ap.iigvietnam.com/vi/news/">tại đây.</a> <br />
+                        - Thí sinh cần kiểm tra kỹ các thông tin đã đăng ký trên hệ thống. Trường hợp cần điều chỉnh thông tin, vui lòng liên hệ hotline <a href="tel: 1900636929">1900 636 929</a> (trong giờ hành chính) để được hướng dẫn và hỗ trợ.
+                        - Thí sinh sẽ nhận được Admission Ticket (thông tin về môn thi, lịch thi, địa điểm thi, phòng thi) từ IIG Việt Nam qua email trước ngày 20/04/2024<br />
+                        - Để biết thêm thông tin hoặc cần được hỗ trợ trong quá trình đăng ký, thí sinh vui lòng liên hệ với IIG Việt Nam qua email: <a href="mailto:info@iigvietnam.edu.vn">info@iigvietnam.edu.vn</a> hoặc hotline:<a href="tel: 1900636929">1900 636 929</a> (trong giờ hành chính).
+                        <br />
+                        <br />
+                        Trân trọng cảm ơn!<br />
+                        Tổ chức giáo dục IIG Việt Nam<br />
+                        <br />
+                        <strong>Đây là email tự động được gửi từ hệ thống. Thí sinh vui lòng không phản hồi lại email này!</strong>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

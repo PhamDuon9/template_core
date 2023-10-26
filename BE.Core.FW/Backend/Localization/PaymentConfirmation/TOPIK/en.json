@@ -1,0 +1,22 @@
+{
+  "mail_subject": "[IIG Vietnam] Successful Registration for {exam_name} test",
+  "header": "SUCCESSFUL REGISTRATION",
+  "sub_header": "We are pleased to inform you that your payment has been successfully processed and your registration for the Test of Proficiency in Korean - {exam_name} has been confirmed.<br />Please find below your test details:",
+  "table_header_column_1": "Full name in Korean",
+  "table_header_column_2": "Full name in Vietnamese",
+  "table_header_column_3": "Date of birth",
+  "table_header_column_4": "Test",
+  "table_header_column_5": "Test area",
+  "table_header_column_6": "Test location",
+  "table_header_column_7": "Address",
+  "table_header_column_8": "Test date",
+  "table_header_column_9": "Test time",
+  "table_header_column_10": "Transaction ID",
+  "table_header_column_11": "Time of payment",
+  "table_header_column_12": "End of check-in time",
+  "notice_content_1": "**Please be noted that:<br />- It is important for you to carefully read all Regulations and Instructions for candidates of the Test of Proficiency in Korean (TOPIK). To access them, please click <a href=\"https://topik.iigvietnam.com\">here</a>",
+  "notice_content_2": "- Please ensure that all the information you have provided during registration is accurate. If you need to make any adjustments, please contact our hotline at <a href=\"tel: 1900636929\">1900.636.929</a> (during office hours) before 5:30 P.M. on October 20, 2023, for guidance and support",
+  "notice_content_3": "- Your <strong>CANDIDATE ID NUMBER and TEST ROOM</strong> information will be updated and emailed to you 2 weeks before the test date",
+  "notice_content_4": "- If you require any further information or assistance, please feel free to contact us via email at <a href=\"mailto:info@iigvietnam.edu.vn\">info@iigvietnam.edu.vn</a> or our hotline at: <a href=\"tel: 1900636929\">1900 636 929</a> (during office hours).",
+  "footer_content": "Best regards,<br />IIG Vietnam<br /><br /><strong>This is an automatic email sent from the system. Please do not reply to this email.</strong>"
+}

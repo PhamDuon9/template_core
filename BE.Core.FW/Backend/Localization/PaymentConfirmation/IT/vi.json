@@ -1,0 +1,17 @@
+{
+  "mail_subject": "[IIG Việt Nam] Thông báo: Thanh toán thành công bài thi {exam_name}",
+  "header": "THANH TOÁN THÀNH CÔNG",
+  "sub_header": "Chúc mừng thí sinh đã hoàn tất việc thanh toán và đăng ký bài thi {exam_name}<br />IIG Việt Nam xin thông báo thông tin thanh toán của thí sinh như sau:",
+  "table_header_column_1": "Họ và tên",
+  "table_header_column_2": "Ngày/tháng/năm sinh",
+  "table_header_column_3": "Bài thi",
+  "table_header_column_4": "Ngày thi",
+  "table_header_column_5": "Mã giao dịch",
+  "table_header_column_6": "Thời gian thanh toán",
+  "notice_content_1": "**Thí sinh lưu ý:<br />- Tham khảo thông tin lưu ý dành cho thí sinh tại <a href=\"https://iigvietnam.com\">đây</a>",
+  "notice_content_2": "- Thí sinh cần kiểm tra kỹ các thông tin đã đăng ký trên hệ thống. Trường hợp cần điều chỉnh thông tin, vui lòng liên hệ hotline <a href=\"tel: 1900636929\">1900 636 929</a> (trong giờ hành chính) để được hướng dẫn và hỗ trợ.",
+  "notice_content_3": "- Để hoàn thiện quy trình đăng ký, thí sinh vui lòng thực hiện tiếp các bước sau:<br />(1) Đăng ký môn thi thành công trên website: <a href=\"https://apcentral.collegeboard.org\">https://apcentral.collegeboard.org/</a> của College Board<br />(2) Tra cứu AP ID tại tài khoản My AP trên hệ thống College Board và cập nhật AP ID trong phần Lịch sử giao dịch trên website: <a href=\"https://iigvietnam.com\">IIG</a> của IIG Vietnam",
+  "notice_content_4": "- Thí sinh sẽ nhận được Admission Ticket (thông tin về môn thi, lịch thi, địa điểm thi, phòng thi) từ IIG Vietnam qua email từ ngày 08/04/2024 đến ngày 13/04/2024.",
+  "notice_content_5": "- Để biết thêm thông tin hoặc cần được hỗ trợ trong quá trình đăng ký, thí sinh vui lòng liên hệ với IIG Việt Nam qua email: <a href=\"mailto:info@iigvietnam.edu.vn\">info@iigvietnam.edu.vn</a> hoặc hotline: <a href=\"tel: 1900636929\">1900 636 929</a> (trong giờ hành chính).",
+  "footer_content": "Trân trọng cảm ơn!<br />Tổ chức giáo dục IIG Việt Nam<br /><br /><strong>Đây là email tự động được gửi từ hệ thống. Thí sinh vui lòng không phản hồi lại email này!</strong>"
+}

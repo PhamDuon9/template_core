@@ -1,0 +1,108 @@
+﻿@{
+    var dateFormat = "dd/MM/yyyy";
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+
+<body>
+    <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin:0 auto">
+        <tr>
+            <td>
+                <p style="text-align: center">
+                    <strong style="font-size: larger; color: #19498a">@(Model?.LocalazationText["header"])</strong>
+                    <br />
+                    <strong>@(Model?.LocalazationText["sub_header"].Replace("{exam_name}", Model.PaymentRequest.ExamName?.ToUpper()))</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_1"])</td>
+                        <td>@(Model?.PaymentRequest.KoreanName)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_2"])</td>
+                        <td>@(Model?.PaymentRequest.VietnameseName)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_3"])</td>
+                        <td>
+                            @if (System.DateTime.TryParse(Model?.PaymentRequest.DOB ?? string.Empty, out System.DateTime dob))
+                            {
+                                <text>@dob.ToString(dateFormat)</text>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_4"])</td>
+                        <td>@(Model?.PaymentRequest.ExamName)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_5"])</td>
+                        <td>@(Model?.PaymentRequest.ExamAreaName)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_6"])</td>
+                        <td>@(Model?.PaymentRequest.ExamLocation)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_7"])</td>
+                        <td>@(Model?.PaymentRequest.ExamAddress)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_8"])</td>
+                        <td>
+                            @if (System.DateTime.TryParse(Model?.PaymentRequest.ExamDate ?? string.Empty, out System.DateTime examDate))
+                            {
+                                <text>@examDate.ToString(dateFormat)</text>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_12"])</td>
+                        <td>@(Model?.PaymentRequest.NoteTimeEnterExamRoom)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_9"])</td>
+                        <td>@(Model?.PaymentRequest.ExamWorkShift)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_10"])</td>
+                        <td>@(Model?.PaymentResponse.TransactionNo)</td>
+                    </tr>
+                    <tr>
+                        <td>@(Model?.LocalazationText["table_header_column_11"])</td>
+                        <td>@(System.DateTime.ParseExact(Model?.PaymentResponse.PayDate ?? string.Empty, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture).ToString($"{dateFormat} HH:mm:ss"))</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    @(Model?.LocalazationText["notice_content_1"])
+                    <br />
+                    @(Model?.LocalazationText["notice_content_2"])
+                    <br />
+                    @(Model?.LocalazationText["notice_content_3"])
+                    <br />
+                    @(Model?.LocalazationText["notice_content_4"])
+                    <br />
+                    <br />
+                    @(Model?.LocalazationText["footer_content"])
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

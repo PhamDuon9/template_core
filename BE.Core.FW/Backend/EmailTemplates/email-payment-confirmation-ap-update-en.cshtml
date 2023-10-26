@@ -1,0 +1,78 @@
+﻿<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+
+<body>
+    <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto;">
+        <tbody>
+            <tr>
+                <td>
+                    <p style="text-align: center;">
+                        <strong style="font-size: larger; color: #19498a;">SUCCESSFUL PAYMENT AND REGISTRATION</strong>
+                        <br />
+                        <strong>
+                            <br />
+                            We would like to confirm that your payment and registration for the upcoming AP exam have been successfully processed. Below, you will find a summary of your registration details:
+                        </strong>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td>Full Name</td>
+                                <td>@Model.FullName</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth (DD/MM/YYYY)</td>
+                                <td>
+                                    @Model.Birthday
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Transaction Code</td>
+                                <td>@Model.Trans</td>
+                            </tr>
+                            <tr>
+                                <td>Payment Time</td>
+                                <td>@Model.DateTimePaid</td>
+                            </tr>
+
+                            <tr style="text-align: left;">
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Exam Subject</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; border-left: none; padding: 8px;">Join Code</th>
+                                <th style="border: 1px solid #dddddd; border-left: none; text-align: left; padding: 8px;">Exam Schedule</th>
+                            </tr>
+                            @Model.TestInfo
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        **Important notes<br />
+                        - We strongly advise you to thoroughly read the Regulations and Instructions for AP exam candidates, available <a href="https://ap.iigvietnam.com/en/news/">here</a> <br />
+                        - Ensure that all information you provided during registration is accurate. In case any adjustments are necessary, please reach out to our hotline at <a href="tel: 1900636929">1900 636 929</a> (available during office hours) for guidance and support.<br />
+                        - Your Admission Ticket, containing vital information about your exam subjects, schedules, locations, and examination rooms, will be sent to your email by IIG Vietnam by 20 April, 2024.<br />
+                        - Should you require assistance or have questions during the registration process, please do not hesitate to contact IIG Vietnam via email: <a href="mailto:info@iigvietnam.edu.vn">info@iigvietnam.edu.vn</a> or our hotline: <a href="tel: 1900636929">1900 636 929</a> (available during office hours).
+                        <br />
+                        <br />
+                        Warm regards,<br />
+                        IIG Vietnam<br />
+                        <br />
+                        <strong>Please note that this email is generated automatically; kindly refrain from responding!</strong>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

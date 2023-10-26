@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        @("@")media screen {
+            @("@")font-face {
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+            }
+
+            @("@")font-face {
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 700;
+                src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+            }
+
+            @("@")font-face {
+                font-family: 'Montserrat';
+                font-style: italic;
+                font-weight: 400;
+                src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+            }
+
+            @("@")font-face {
+                font-family: 'Montserrat';
+                font-style: italic;
+                font-weight: 700;
+                src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+            }
+        }
+
+        /* CLIENT-SPECIFIC STYLES */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        .width-template {
+            max-width: 800px;
+        }
+
+        /* RESET STYLES */
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @("@")media screen and (max-width:600px) {
+            h1 {
+                font-size: 32px !important;
+                line-height: 32px !important;
+            }
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+    <!-- HIDDEN PREHEADER TEXT -->
+    <div
+        style="display: none; font-size: 1px; color: #0F6CBD !important; line-height: 1px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        @Model?.TitleMailSBD
+    </div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <!-- LOGO -->
+        <tr>
+            <td bgcolor="#3eaf7c" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="width-template">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 0;"> </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#3eaf7c" align="center" style="padding: 20px 40px 0">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="width-template">
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" valign="top"
+                            style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #0F548C; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; line-height: 48px;">
+                            <h1 style="font-size: 18px; font-weight: 700; margin: 2px;color: #0F548C">
+                                @Model?.TitleMailSBD</h1>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0 40px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="width-template">
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 20px 30px 20px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 4px 0;">
+                                @Model?.GreetingMailSBD
+                            </p>
+                            <p style="margin: 4px 0;">
+                                @Model?.ContentMailSBD1
+                            </p>
+                        </td>
+                    </tr>
+                    @*Thông tin thí sinh*@
+                     <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 0px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="width-template">
+								<colgroup span="2" style="width:50%"></colgroup>
+								<tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleFullNameKorea</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.FullNameKorea</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleFullNameVietnamese</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.FullNameVietnamese</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleBirthday</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.Birthday</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleCandidateNumber</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.CandidateNumber</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleExamName</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.ExamName</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleAreaName</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.AreaName</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitlePlaceName</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.PlaceName</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleAddressPlaceName</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.AddressPlaceName</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleCandidateRoom</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.CandidateRoom</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleExamDate</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.ExamDate</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleTimeEndsToEnterExamRoom</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.TimeEndsToEnterExamRoom</span>
+									</td>
+								</tr>
+                                <tr>
+									<td style="padding: 6px 0">
+										<span>@Model?.TitleExamTime</span>
+									</td>
+									<td style="padding: 6px 0">
+										<span>@Model?.ExamTime</span>
+									</td>
+								</tr>
+							</table>
+                        </td>
+                    </tr>
+                    @*Hết phần thông tin thí sinh*@
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 0px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 4px 0;">
+                                <span style="font-size:14px;margin-right: 4px;">@Model.ContentMailSBD2</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 0px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 4px 0;">
+                                <span style="font-size:14px;margin-right: 4px;font-weight: 800;">@Model.ContentMailSBD3</span>
+                            </p>
+                        </td>
+                    </tr> <!-- COPY -->
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span>@Model.ContentMailSBD4</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span>@Model.ContentMailSBD5</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span>@Model.ContentMailSBD6</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span style="margin: 0;">@Model.ContentMailSBD7</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span style="margin: 0;">@Model.ContentMailSBD8</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 6px 30px 6px 30px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;overflow-wrap: anywhere;">
+                            <div style="display:flex">
+                                <span style="font-size:18px;margin-right: 4px;">•</span>
+                                <span style="margin: 0;">@Model.ContentMailSBD9</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 20px 30px 0 30px; border-radius: 0px 0px 4px 4px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;">@Model.ContentMailSBD10</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 0 30px; border-radius: 0px 0px 4px 4px; color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;">@Model.ContentMailSBD11</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0 40px 20px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="width-template">
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <h2 style="font-size: 14px; font-weight: 400; color: #111111; margin: 0;">
+                                @Model.ContentMailSBD12
+                            </h2>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

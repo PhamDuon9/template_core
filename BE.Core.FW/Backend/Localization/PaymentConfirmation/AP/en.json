@@ -1,0 +1,21 @@
+{
+  "mail_subject": "[IIG Vietnam] Important: Successful Payment for AP Exams",
+  "header": "SUCCESSFUL PAYMENT",
+  "sub_header": "Congratulations on successfully completing your payment for the AP exams.<br />We would like to confirm your payment details as follow:",
+  "table_header_column_1": "Full Name",
+  "table_header_column_2": "Date of Birth (DD/MM/YYYY)",
+  "table_header_column_3": "",
+  "table_header_column_4": "",
+  "table_header_column_5": "Transaction Code",
+  "table_header_column_6": "Payment Time",
+  "notice_content_1": "**Important Notes:<br />- We strongly advise you to thoroughly read the Regulations and Instructions for AP exam candidates, available <a href=\"https://ap.iigvietnam.com/en/news\">here</a>",
+  "notice_content_2": "- Ensure that all information you provided during registration is accurate. In case any adjustments are necessary, please reach out to our hotline at <a href=\"tel: 1900636929\">1900 636 929</a> (available during office hours) for guidance and support.",
+  "notice_content_3": "- Please follow the below instructions to complete the test registration:<br />(1) Ensure you have successfully registered for the exam on the College Board's website: <a href=\"https://myap.collegeboard.org\">https://myap.collegeboard.org</a><br />(2) Locate your AP ID in “My AP Profile” on the College Board website and update it in the Exam Registration History section on our website: <a href=\"https://ap.iigvietnam.com\">https://ap.iigvietnam.com</a>",
+  "notice_content_4": "- Find detailed instructions for AP exam registration <a href=\"https://ap.iigvietnam.com/en/news/huong-dan-thao-tac-dang-ky-du-thi-bai-thi-ap\">here</a><br />- Your Admission Ticket, containing vital information about your exam subjects, schedules, locations, and examination rooms, will be sent to your email by IIG Vietnam by 20 April, 2024.",
+  "notice_content_5": "- Should you require assistance or have questions during the registration process, please do not hesitate to contact IIG Vietnam via email: <a href=\"mailto:info@iigvietnam.edu.vn\">info@iigvietnam.edu.vn</a> or our hotline: <a href=\"tel: 1900636929\">1900 636 929</a> (available during office hours).",
+  "footer_content": "Warm regards,<br />IIG Vietnam<br /><br /><strong>Please note that this email is generated automatically; kindly refrain from responding!</strong>",
+  "table_exam_detail_col_1": "Exam Subject",
+  "table_exam_detail_col_2": "Join Code",
+  "table_exam_detail_col_3": "Exam Schedule",
+  "table_exam_detail_col_4": "Exam Time"
+}

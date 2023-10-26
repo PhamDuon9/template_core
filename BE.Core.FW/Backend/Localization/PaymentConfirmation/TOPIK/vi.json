@@ -1,0 +1,22 @@
+{
+  "mail_subject": "[IIG Việt Nam] Thông báo: Đăng ký thành công bài thi {exam_name}",
+  "header": "ĐĂNG KÝ THÀNH CÔNG",
+  "sub_header": "Chúc mừng thí sinh đã hoàn tất việc thanh toán và đăng ký thành công bài thi năng lực tiếng Hàn {exam_name}<br />IIG Việt Nam xin thông báo thông tin kỳ thi của thí sinh như sau:",
+  "table_header_column_1": "Họ và tên tiếng Hàn",
+  "table_header_column_2": "Họ và tên tiếng Việt",
+  "table_header_column_3": "Ngày/tháng/năm sinh",
+  "table_header_column_4": "Tên bài thi",
+  "table_header_column_5": "Khu vực thi",
+  "table_header_column_6": "Địa điểm thi",
+  "table_header_column_7": "Địa chỉ",
+  "table_header_column_8": "Ngày dự thi",
+  "table_header_column_9": "Thời gian thi",
+  "table_header_column_10": "Mã giao dịch",
+  "table_header_column_11": "Thời gian thanh toán",
+  "table_header_column_12": "Thời gian kết thúc vào phòng",
+  "notice_content_1": "**Thí sinh lưu ý:<br />- Vui lòng đọc kỹ các thông tin về Quy định và Hướng dẫn dành cho thí sinh kỳ thi năng lực tiếng Hàn TOPIK tại <a href=\"https://topik.iigvietnam.com\">đây</a>",
+  "notice_content_2": "- Thí sinh cần kiểm tra kỹ các thông tin đã đăng ký trên hệ thống. Trường hợp cần điều chỉnh thông tin, vui lòng liên hệ hotline <a href=\"tel: 1900636929\">1900 636 929</a> (trong giờ hành chính) muộn nhất là 17h30 ngày 20/10/2023 để được hướng dẫn và hỗ trợ.",
+  "notice_content_3": "- Thông tin <strong>SỐ BÁO DANH, PHÒNG THI</strong> sẽ được cập nhật và gửi qua email cho thí sinh trong khoảng 02 tuần trước ngày thi.",
+  "notice_content_4": "- Để biết thêm thông tin hoặc cần được hỗ trợ, thí sinh vui lòng liên hệ với IIG Việt Nam qua email: <a href=\"mailto:info@iigvietnam.edu.vn\">info@iigvietnam.edu.vn</a> hoặc hotline: <a href=\"tel: 1900636929\">1900 636 929</a> (trong giờ hành chính).",
+  "footer_content": "Trân trọng cảm ơn!<br />Tổ chức giáo dục IIG Việt Nam<br /><br /><strong>Đây là email tự động được gửi từ hệ thống. Thí sinh vui lòng không phản hồi lại email này!</strong>"
+}
