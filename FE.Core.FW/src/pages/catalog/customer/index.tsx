@@ -14,7 +14,6 @@ import {
     message
 } from 'antd';
 import { useEffect, useReducer, useRef, useState } from 'react';
-
 import { Code } from '@/apis';
 import { deleteManyDivision } from '@/apis/services/toefl-challenge/DivisionService';
 import Permission from '@/components/Permission';
@@ -24,23 +23,14 @@ import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 import { useNavigate } from 'react-router-dom';
 import { ConvertOptionSelectModel } from '@/utils/convert';
 import { OptionModel, SelectOptionModel } from '@/@types/data';
-import ImportProduct from './import-customer';
+import ImportCustomer from './import-customer';
 import { CustomerModel } from '@/apis/models/CustomerModel';
 import { deleteCustomer, getCustomer } from '@/apis/services/CustomerService';
 import { getAdministrativeDivision } from '@/apis/services/AdministrativeDivisionService';
 function Customer() {
-    const navigate = useNavigate();
-    // Load
-    const { Panel } = Collapse;
-    const initState = {
-        districts: [],
-        provinces: [],
-        departments: [],
-    };
+    // Default
     const [loading, setLoading] = useState<boolean>(false);
-    const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
     const [list, setList] = useState<CustomerModel[]>([]);
-    const [showModelImport, setShowModelImport] = useState<boolean>(false);
     const [pagination, setPagination] = useState<PaginationConfig>({
         total: 0,
         current: 1,
@@ -48,8 +38,50 @@ function Customer() {
         showSizeChanger: true,
         showQuickJumper: true,
     });
+    const getList = async (current: number, pageSize: number = 20): Promise<void> => {
+        setLoading(true);
+        searchFormSubmit(current, pageSize);
+        setLoading(false);
+    };
+
+    // searchForm
+    const [searchForm] = Form.useForm();
+    const searchFormSubmit = async (current: number = 1, pageSize: number = 20): Promise<void> => {
+        try {
+            const fieldsValue = await searchForm.validateFields();
+            setLoading(true)
+            const filter = {
+                ...fieldsValue,
+                page: current,
+                size: pageSize,
+            }
+            const response: ResponseData = await getCustomer(
+                JSON.stringify(filter)
+            );
+            setList((response.data || []) as CustomerModel[]);
+            setPagination({
+                ...pagination,
+                current,
+                total: response.totalCount || 0,
+                pageSize: pageSize,
+            });
+
+            setLoading(false);
+        } catch (error: any) {
+            console.log(error);
+        }
+    };
+
+    //Detail
+    const navigate = useNavigate();
+    const { Panel } = Collapse;
+    const [showModelImport, setShowModelImport] = useState<boolean>(false);
     const [selectedRowDeleteKeys, setSelectedRowDeleteKeys] = useState<string[]>([]);
-    const { Title, Paragraph, Text, Link } = Typography;
+    const initState = {
+        districts: [],
+        provinces: [],
+        departments: [],
+    };
     const [state, dispatch] = useReducer<(prevState: any, updatedProperty: any) => any>(
         (prevState: any, updatedProperty: any) => ({
             ...prevState,
@@ -57,12 +89,6 @@ function Customer() {
         }),
         initState,
     );
-
-    const getList = async (current: number, pageSize: number = 20): Promise<void> => {
-        setLoading(true);
-        searchFormSubmit(current, pageSize);
-        setLoading(false);
-    };
     useEffect(() => {
         const fnGetInitState = async () => {
             const responseProvinces: ResponseData = await getAdministrativeDivision();
@@ -137,59 +163,33 @@ function Customer() {
         // dispatch(stateDispatcher);
     }
 
-    const multiDeleteRecord = () => {
-        setLoadingDelete(true)
-        Modal.confirm({
-            title: 'Cảnh báo',
-            content: `Xác nhận xóa những bản ghi đã chọn?`,
-            okText: 'Đồng ý',
-            cancelText: 'Hủy',
-            onOk: async () => {
-                const response = await deleteManyDivision(selectedRowDeleteKeys);
-                setLoadingDelete(false)
-                if (response.code === Code._200) {
-                    message.success(response.message)
-                    setSelectedRowDeleteKeys([])
-                    getList(1);
-                }
-                else {
-                    message.error(response.message)
-                }
-            },
-        });
-    };
+    // const multiDeleteRecord = () => {
+    //     setLoadingDelete(true)
+    //     Modal.confirm({
+    //         title: 'Cảnh báo',
+    //         content: `Xác nhận xóa những bản ghi đã chọn?`,
+    //         okText: 'Đồng ý',
+    //         cancelText: 'Hủy',
+    //         onOk: async () => {
+    //             const response = await deleteManyDivision(selectedRowDeleteKeys);
+    //             setLoadingDelete(false)
+    //             if (response.code === Code._200) {
+    //                 message.success(response.message)
+    //                 setSelectedRowDeleteKeys([])
+    //                 getList(1);
+    //             }
+    //             else {
+    //                 message.error(response.message)
+    //             }
+    //         },
+    //     });
+    // };
 
     const onHandleShowModelCreate = async () => {
         navigate(`/catalog/customer/create`)
     };
 
-    // searchForm
-    const [searchForm] = Form.useForm();
-    const searchFormSubmit = async (current: number = 1, pageSize: number = 20): Promise<void> => {
-        try {
-            const fieldsValue = await searchForm.validateFields();
-            setLoading(true)
-            const filter = {
-                ...fieldsValue,
-                page: current,
-                size: pageSize,
-            }
-            const response: ResponseData = await getCustomer(
-                JSON.stringify(filter)
-            );
-            setList((response.data || []) as CustomerModel[]);
-            setPagination({
-                ...pagination,
-                current,
-                total: response.totalCount || 0,
-                pageSize: pageSize,
-            });
-
-            setLoading(false);
-        } catch (error: any) {
-            console.log(error);
-        }
-    };
+    
 
 
     const columns: ProColumns<CustomerModel>[] = [
@@ -247,12 +247,12 @@ function Customer() {
             width: 300,
             render: (_, record) => (
                 <Space>
-                    <Permission noNode navigation={layoutCode.catalogProduct as string} bitPermission={PermissionAction.Edit}>
+                    <Permission noNode navigation={layoutCode.catalogCustomer as string} bitPermission={PermissionAction.Edit}>
                         <Button type="dashed" title='Cập nhật' loading={false} onClick={() => navigate(`/catalog/customer/edit/${record.id}`)}>
                             <EditOutlined />
                         </Button>
                     </Permission>
-                    <Permission noNode navigation={layoutCode.catalogProduct as string} bitPermission={PermissionAction.Delete}>
+                    <Permission noNode navigation={layoutCode.catalogCustomer as string} bitPermission={PermissionAction.Delete}>
                         <Button danger title='Xóa' loading={false} onClick={() => deleteRecord(record.id || '')}>
                             <DeleteOutlined />
                         </Button>
@@ -273,24 +273,7 @@ function Customer() {
                 title={
                     <>
                         <Row gutter={16} justify='start'>
-                            <Col span={24} className='gutter-row' style={{ marginBottom: '8px' }}>
-                                <Space>
-                                    {/* <Permission noNode navigation={layoutCode.catalogBranch as string} bitPermission={PermissionAction.Add}>
-                                        <Button htmlType='button' type='default' onClick={() => onHandleShowModelCreate()}>
-                                            <PlusOutlined />
-                                            Tạo mới
-                                        </Button>
-                                    </Permission> */}
-                                    <Permission noNode navigation={layoutCode.catalogProduct as string} bitPermission={PermissionAction.Delete}>
-                                        {selectedRowDeleteKeys.length > 0 &&
-                                            <Button htmlType='button' danger loading={loadingDelete} type='dashed' onClick={() => multiDeleteRecord()}>
-                                                <DeleteOutlined />
-                                                Xóa
-                                            </Button>
-                                        }
-                                    </Permission>
-                                </Space>
-                            </Col>
+                            
                             <Col span={24} className='gutter-row'>
                                 <Collapse>
                                     <Panel header='Tìm kiếm' key='1'>
@@ -417,7 +400,7 @@ function Customer() {
                 />
             </Card>
             {showModelImport && (
-                <ImportProduct
+                <ImportCustomer
                     open={showModelImport}
                     setOpen={setShowModelImport}
                     reload={searchFormSubmit}

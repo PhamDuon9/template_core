@@ -18,7 +18,7 @@ namespace Backend.Controllers
             _handler = handler;
         }
 
-        //#region dành cho wso2
+        #region dành cho wso2
         //[HttpGet]
         //public async Task<bool> CheckAuthWSO2()
         //{
@@ -33,7 +33,7 @@ namespace Backend.Controllers
         //{
         //    return await _handler.GetToken(code);
         //}
-        //#endregion
+        #endregion
 
         [HttpGet]
         [Route("GetNavigation")]

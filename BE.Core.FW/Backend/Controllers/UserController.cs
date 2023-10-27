@@ -28,9 +28,9 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ResponseData> Get([FromQuery] string? name, int pageIndex = 1, int pageSize = 10)
+        public ResponseData Get(string filter = "{}")
         {
-            return await _handler.Get(name, HttpHelper.GetAccessFromHeader(Request), pageIndex, pageSize);
+            return _handler.Get(filter);
         }
 
         [Authorize]

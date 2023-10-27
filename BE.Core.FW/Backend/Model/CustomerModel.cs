@@ -36,5 +36,7 @@ namespace Backend.Model
         public Guid? DepartmentId { get; set; }
         public Guid? ProvinceId { get; set; }
         public Guid? DistrictId { get; set; }
+        public int pageNumber { get; set; }
+        public int pageSize { get; set; }
     }
 }

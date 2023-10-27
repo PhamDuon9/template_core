@@ -15,10 +15,10 @@ import {
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getUser = (name?: string,
-  pageIndex: number = 1,
-  pageSize: number = 10,
-  tenant?: string): CancelablePromise<ResponseData> => {
+export const getUser = (
+  filter: string = "{}",
+  tenant?: string
+): CancelablePromise<ResponseData> => {
   return __request({
     method: "GET",
     path: `/User`,
@@ -26,9 +26,7 @@ export const getUser = (name?: string,
       Tenant: tenant,
     },
     query: {
-      name: name,
-      pageIndex: pageIndex,
-      pageSize: pageSize,
+      filter
     },
   });
 };
@@ -163,7 +161,7 @@ export const deleteUser = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const deleteUser1 = (
+export const deleteManyUser = (
   tenant?: string,
   requestBody?: Array<string>
 ): CancelablePromise<ResponseData> => {

@@ -131,25 +131,37 @@ namespace Backend.Business.Auth
 
         public async Task<TokenResponse> GetTokenAPI(UserLogin model, string ipAddress)
         {
-            using UnitOfWork unitOfWork = new(_httpContextAccessor);
-            var existUser = unitOfWork.Repository<SysUser>().Get(g => g.Username == model.Username)?.FirstOrDefault();
-            if (existUser == null)
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            var body = new
             {
-                throw new UnauthorizedException("Unauthorized");
+                username = model.Username+"@iigvietnam.edu.vn",
+                password = model.Password
+            };
+            using (var client = new HttpClient(clientHandler))
+            {
+                client.BaseAddress = new Uri(apiBasicUriWSO2);
+                //client.DefaultRequestHeaders.Add("Authorization", "Basic " + System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(Clientid + ":" + Secret)));
+                var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+                var result = await client.PostAsync(Utils.GetConfig("Authentication:WSO2:Tenants:iig") +Utils.GetConfig("Authentication:WSO2:API:GetToken"), content);
+                string resultContentString = await result.Content.ReadAsStringAsync();
+                if (result.IsSuccessStatusCode && result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using UnitOfWork unitOfWork = new(_httpContextAccessor);
+                    var existUser = unitOfWork.Repository<SysUser>().Get(g => g.Username == model.Username)?.FirstOrDefault();
+                    if (existUser == null)
+                    {
+                        throw new UnauthorizedException("Unauthorized");
+                    }
+                    var token = await GenerateTokensAndUpdateUser(_mapper.Map<UserModel>(existUser), ipAddress);
+                    return token;
+                }
             }
-            var token = await GenerateTokensAndUpdateUser(_mapper.Map<UserModel>(existUser), ipAddress);
-            return token;
+            throw new UnauthorizedException("Lỗi lấy dữ liệu WSO2");
         }
         private async Task<TokenResponse> GenerateTokensAndUpdateUser(UserModel user, string ipAddress)
         {
             string token = GenerateJwt(user, ipAddress);
-
-            //user.RefreshToken = GenerateRefreshToken();
-            //user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
-
-            //await _userManager.UpdateAsync(user);
-
-            //return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
             return new TokenResponse(token, "", DateTime.Now);
         }
 

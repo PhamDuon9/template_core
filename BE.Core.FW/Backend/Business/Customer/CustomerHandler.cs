@@ -79,8 +79,6 @@ public class CustomerHandler : ICustomerHandler
     {
         try
         {
-            int pageNumber = 0;
-            int pageSize = 20;
             int totalCount = 0;
             var filterModel = JsonConvert.DeserializeObject<CustomerFilterModel>(filter);
             if (filterModel == null)
@@ -99,8 +97,8 @@ public class CustomerHandler : ICustomerHandler
             if (filterModel.Page.HasValue && filterModel.Size.HasValue)
             {
                 iigDepartmentData = iigDepartmentData.OrderBy(g => g.CreatedOnDate).Skip((filterModel.Page.Value - 1) * filterModel.Size.Value).Take(filterModel.Size.Value);
-                pageNumber = filterModel.Page.Value;
-                pageSize = filterModel.Size.Value;
+                filterModel.pageNumber = filterModel.Page.Value;
+                filterModel.pageSize = filterModel.Size.Value;
             }
             var result = new List<CustomerModel>();
             foreach (var item in iigDepartmentData)
@@ -116,10 +114,10 @@ public class CustomerHandler : ICustomerHandler
 
             var pagination = new Pagination()
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
+                PageNumber = filterModel.pageNumber,
+                PageSize = filterModel.pageSize,
                 TotalCount = totalCount,
-                TotalPage = (int)Math.Ceiling((decimal)totalCount / pageSize)
+                TotalPage = (int)Math.Ceiling((decimal)totalCount / filterModel.pageSize)
             };
             return new PageableData<List<CustomerModel>>(result, pagination, Code.Success, "");
         }

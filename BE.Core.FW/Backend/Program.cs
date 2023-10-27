@@ -168,7 +168,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
 });
 
-//Authen với ws02
+////Authen với ws02
 //builder.Services.AddAuthentication(option =>
 //{
 //    option.DefaultAuthenticateScheme = "Custom Scheme";

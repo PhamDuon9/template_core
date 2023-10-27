@@ -75,4 +75,10 @@ namespace Backend.Business.User
         public string Username { get; set; }
         public string Password { get; set; }
     }
+    public class UserFilterModel : UserModel
+    {
+        public string textSearch { get; set; }
+        public int pageNumber { get; set; }
+        public int pageSize { get; set; }
+    }
 }

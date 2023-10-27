@@ -4,7 +4,7 @@ namespace Backend.Business.User
 {
     public interface IUserHandler
     {
-        Task<ResponseData> Get(string? name, string access_token = "", int pageIndex = 1, int pageSize = 10);
+        ResponseData Get(string filter);
         ResponseData GetById(Guid id);
         ResponseData GetBySyncId(Guid syncId);
         ResponseData GetUserInforById(Guid Id);
