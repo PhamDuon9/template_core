@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Backend.Business
+﻿namespace Backend.Business.CustomerGroup
 {
-    public class BranchModel
+    public class CustomerGroupModel
     {
         public Guid Id { get; set; }
         public string Code { get; set; } = default!;
@@ -12,9 +10,8 @@ namespace Backend.Business
         public Guid LastModifiedByUserId { get; set; }
         public DateTime LastModifiedOnDate { get; set; } = DateTime.Now;
         public DateTime CreatedOnDate { get; set; } = DateTime.Now;
-
     }
-    public class BranchFilterModel : BranchModel
+    public class CustormerGroupFilterModel : CustomerGroupModel
     {
         public string textSearch { get; set; }
         public int pageNumber { get; set; }

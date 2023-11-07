@@ -213,14 +213,13 @@ public class DepartmentHandler : IDepartmentHandler
             {
                 return new ResponseDataError(Code.NotFound, "Id not found");
             }
-            if (!string.IsNullOrEmpty(model.Code))
-                iigDepartmentData.Code = model.Code;
-            if (!string.IsNullOrEmpty(model.Name))
-                iigDepartmentData.Name = model.Name;
-            if (model.ParentId != Guid.Empty)
-                iigDepartmentData.ParentId = model.ParentId;
-            if (!string.IsNullOrEmpty(model.Description))
-                iigDepartmentData.Description = model.Description;
+
+            iigDepartmentData.Code = model.Code;
+            iigDepartmentData.Name = model.Name;
+            iigDepartmentData.Description = model.Description;
+            iigDepartmentData.IsCom = model.IsCom;
+            iigDepartmentData.BranchId = model.BranchId;
+            iigDepartmentData.ParentId = model.ParentId;
             if (model.ParentId.HasValue)
             {
                 iigDepartmentData.Level = (unitOfWork.Repository<SysDepartment>().GetById(model.ParentId.Value)?.Level ?? 0) + 1;

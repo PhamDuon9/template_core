@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BranchModel } from "../models/BranchModel";
+import type { CustomerGroupModel } from "../models/CustomerGroupModel";
 import type { ResponseData } from "../models/ResponseData";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import {
@@ -16,13 +16,13 @@ import {
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const postBranch = (
+export const postCustomerGroup = (
   tenant?: string,
-  requestBody?: BranchModel
+  requestBody?: CustomerGroupModel
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "POST",
-    path: `/Branch`,
+    path: `/CustomerGroup`,
     headers: {
       Tenant: tenant,
     },
@@ -37,13 +37,13 @@ export const postBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getBranch = (
+export const getCustomerGroup = (
   filter: string = "{}",
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "GET",
-    path: `/Branch`,
+    path: `/CustomerGroup`,
     headers: {
       Tenant: tenant,
     },
@@ -59,13 +59,13 @@ export const getBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const deleteBranch = (
+export const deleteCustomerGroup = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "DELETE",
-    path: `/Branch/id`,
+    path: `/CustomerGroup/id`,
     headers: {
       Tenant: tenant,
     },
@@ -81,13 +81,13 @@ export const deleteBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const deleteManyBranch = (
+export const deleteManyCustomerGroup = (
   requestBody?: Array<string>,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "DELETE",
-    path: `/Branch/DeleteMany`,
+    path: `/CustomerGroup/DeleteMany`,
     headers: {
       Tenant: tenant,
     },
@@ -102,13 +102,13 @@ export const deleteManyBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getBranchById = (
+export const getCustomerGroupById = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "GET",
-    path: `/Branch/id`,
+    path: `/CustomerGroup/id`,
     headers: {
       Tenant: tenant,
     },
@@ -125,14 +125,14 @@ export const getBranchById = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const putBranch = (
+export const putCustomerGroup = (
   id?: string,
   tenant?: string,
-  requestBody?: BranchModel
+  requestBody?: CustomerGroupModel
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "PUT",
-    path: `/Branch/id`,
+    path: `/CustomerGroup/id`,
     headers: {
       Tenant: tenant,
     },

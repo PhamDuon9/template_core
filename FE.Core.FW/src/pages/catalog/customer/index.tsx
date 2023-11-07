@@ -15,7 +15,6 @@ import {
 } from 'antd';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { Code } from '@/apis';
-import { deleteManyDivision } from '@/apis/services/toefl-challenge/DivisionService';
 import Permission from '@/components/Permission';
 import { PermissionAction, layoutCode } from '@/utils/constants';
 import { DeleteOutlined, EditOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
@@ -26,7 +25,6 @@ import { OptionModel, SelectOptionModel } from '@/@types/data';
 import ImportCustomer from './import-customer';
 import { CustomerModel } from '@/apis/models/CustomerModel';
 import { deleteCustomer, getCustomer } from '@/apis/services/CustomerService';
-import { getAdministrativeDivision } from '@/apis/services/AdministrativeDivisionService';
 function Customer() {
     // Default
     const [loading, setLoading] = useState<boolean>(false);
@@ -91,22 +89,22 @@ function Customer() {
     );
     useEffect(() => {
         const fnGetInitState = async () => {
-            const responseProvinces: ResponseData = await getAdministrativeDivision();
+            // const responseProvinces: ResponseData = await getAdministrativeDivision();
 
-            const optionProvinces = ConvertOptionSelectModel(responseProvinces.data as OptionModel[]);
-            const stateDispatcher = {
-                provinces: [{
-                    key: 'Default',
-                    label: '-Chọn-',
-                    value: '',
-                } as SelectOptionModel].concat(optionProvinces),
-                districts: [{
-                    key: 'Default',
-                    label: '-Chọn-',
-                    value: '',
-                } as SelectOptionModel],
-            };
-            dispatch(stateDispatcher);
+            // const optionProvinces = ConvertOptionSelectModel(responseProvinces.data as OptionModel[]);
+            // const stateDispatcher = {
+            //     provinces: [{
+            //         key: 'Default',
+            //         label: '-Chọn-',
+            //         value: '',
+            //     } as SelectOptionModel].concat(optionProvinces),
+            //     districts: [{
+            //         key: 'Default',
+            //         label: '-Chọn-',
+            //         value: '',
+            //     } as SelectOptionModel],
+            // };
+            // dispatch(stateDispatcher);
         }
         fnGetInitState()
         getList(1);
@@ -289,7 +287,7 @@ function Customer() {
                                                     <Form.Item
                                                         label={'Tên SP'}
                                                         labelCol={{ span: 24 }}
-                                                        wrapperCol={{ span: 17 }}
+                                                        wrapperCol={{ span: 24 }}
                                                         name='TextSearch'
                                                     >
                                                         <Input
@@ -325,9 +323,6 @@ function Customer() {
                                                             showSearch
                                                             optionFilterProp="children"
                                                             filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input.toLowerCase())}
-                                                            // filterSort={(optionA, optionB) =>
-                                                            //     (optionA?.label ?? '').toString().toLowerCase().localeCompare((optionB?.label ?? '').toString().toLowerCase())
-                                                            // }
                                                             placeholder='-Chọn-' options={state.districts} />
                                                     </Form.Item>
                                                 </Col>

@@ -14,12 +14,8 @@ import {
     Typography,
     message
 } from 'antd';
-import { ColumnsType } from 'antd/lib/table';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import { OptionModel } from '@/@types/data';
-import { deleteBranch, getBranch } from '@/apis/services/BranchService';
-import { deleteDivision, deleteManyDivision } from '@/apis/services/toefl-challenge/DivisionService';
 import Permission from '@/components/Permission';
 import { PermissionAction, layoutCode } from '@/utils/constants';
 import {
@@ -28,15 +24,23 @@ import {
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 import { useNavigate } from 'react-router-dom';
+import { deleteBranch, getBranch, deleteManyBranch, getBranchById } from '@/apis/services/BranchService';
+import CreateBranch from './create'
+import EditBranch from './edit'
+
 function Branch() {
-    const navigate = useNavigate();
     // Load
     const { Panel } = Collapse;
     const initState = {
         departments: [],
     };
     const [loading, setLoading] = useState<boolean>(false);
+    const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
     const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+    const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+    const [showEditForm, setShowEditForm] = useState<boolean>(false);
+    const [branchEdit, setBranchEdit] = useState<BranchModel>({});
+    const [initLoadingModal, setInitLoadingModal] = useState<boolean>(false);
     const [list, setList] = useState<BranchModel[]>([]);
     const [pagination, setPagination] = useState<PaginationConfig>({
         total: 0,
@@ -112,7 +116,7 @@ function Branch() {
             okText: 'Đồng ý',
             cancelText: 'Hủy',
             onOk: async () => {
-                const response = await deleteManyDivision(selectedRowDeleteKeys);
+                const response = await deleteManyBranch(selectedRowDeleteKeys);
                 setLoadingDelete(false)
                 if (response.code === Code._200) {
                     message.success(response.message)
@@ -127,7 +131,40 @@ function Branch() {
     };
 
     const onHandleShowModelCreate = async () => {
-        navigate(`/catalog/branch/create`)
+        setLoadingCreate(true)
+        setShowCreateForm(true)
+        setLoadingCreate(false)
+        // const responseIIGDepartment: ResponseData = await getDepartment2();
+        // if (responseIIGDepartment.code === Code._200) {
+        //     const stateDispatcher = {
+        //         iigdepartments: responseIIGDepartment.data ?? []
+        //     };
+        //     dispatch(stateDispatcher);
+        //     setShowCreateForm(true)
+        //     setLoadingCreate(false)
+
+        // }
+        // else {
+        //     message.error(responseIIGDepartment.message)
+        // }
+    };
+    const onHandleShowModalEdit = async (userId: string) => {
+        await getBranchCurrentEdit(userId)
+    };
+
+    /**
+   * Lấy thông tin người dùng cần update
+   * @param id 
+   */
+    const getBranchCurrentEdit = async (id: string): Promise<void> => {
+        setInitLoadingModal(true)
+        const response: ResponseData = await getBranchById(id);
+        if (response && response.code === Code._200) {
+            const getBranchCurrent = response.data as BranchModel ?? {};
+            setBranchEdit(getBranchCurrent)
+            setInitLoadingModal(false)
+            setShowEditForm(true);
+        }
     };
 
     // searchForm
@@ -137,8 +174,8 @@ function Branch() {
             const fieldsValue = await searchForm.validateFields();
             setLoading(true)
             const filter = {
-                page: current,
-                size: pageSize,
+                pageNumber: current,
+                pageSize: pageSize,
                 textSearch: fieldsValue.TextSearch,
             }
             const response: ResponseData = await getBranch(
@@ -190,7 +227,7 @@ function Branch() {
             render: (_, record) => (
                 <Space>
                     <Permission noNode navigation={layoutCode.catalogBranch as string} bitPermission={PermissionAction.Edit}>
-                        <Button type="dashed" title='Cập nhật' loading={false} onClick={() => navigate(`/catalog/branch/edit/${record.id}`)}>
+                        <Button type="dashed" title='Cập nhật' loading={false} onClick={() => onHandleShowModalEdit(record.id || '')}>
                             <EditOutlined />
                         </Button>
                     </Permission>
@@ -204,32 +241,14 @@ function Branch() {
         },
     ];
 
-    const actionRef = useRef<ActionType>();
     return (
         <div className='layout-main-content'>
             <Card
+
                 bordered={false}
                 title={
                     <>
                         <Row gutter={16} justify='start'>
-                            <Col span={24} className='gutter-row' style={{ marginBottom: '8px' }}>
-                                <Space>
-                                    {/* <Permission noNode navigation={layoutCode.catalogBranch as string} bitPermission={PermissionAction.Add}>
-                                        <Button htmlType='button' type='default' onClick={() => onHandleShowModelCreate()}>
-                                            <PlusOutlined />
-                                            Tạo mới
-                                        </Button>
-                                    </Permission> */}
-                                    <Permission noNode navigation={layoutCode.toeflChallengeDivision as string} bitPermission={PermissionAction.Delete}>
-                                        {selectedRowDeleteKeys.length > 0 &&
-                                            <Button htmlType='button' danger loading={loadingDelete} type='dashed' onClick={() => multiDeleteRecord()}>
-                                                <DeleteOutlined />
-                                                Xóa
-                                            </Button>
-                                        }
-                                    </Permission>
-                                </Space>
-                            </Col>
                             <Col span={24} className='gutter-row'>
                                 <Collapse>
                                     <Panel header='Tìm kiếm' key='1'>
@@ -240,10 +259,10 @@ function Branch() {
                                                 ['TextSearch']: '',
                                             }}
                                         >
-                                            <Row gutter={16} justify='start'>
+                                            <Row gutter={24} justify='start'>
                                                 <Col span={6}>
                                                     <Form.Item
-                                                        label={'Tên chi nhánh'}
+                                                        // label={'Tên chi nhánh'}
                                                         labelCol={{ span: 24 }}
                                                         wrapperCol={{ span: 17 }}
                                                         name='TextSearch'
@@ -253,9 +272,7 @@ function Branch() {
                                                             allowClear />
                                                     </Form.Item>
                                                 </Col>
-
-
-                                                <Col span={24}>
+                                                <Col span={24} style={{float:'right'}}>
                                                     <Button type='primary' htmlType='submit' onClick={() => searchFormSubmit()}>
                                                         Tìm kiếm
                                                     </Button>
@@ -273,22 +290,6 @@ function Branch() {
                 }
                 extra={<div></div>}
             >
-                {/* <Table
-                    rowKey='id'
-                    columns={columns}
-                    dataSource={list}
-                    loading={loading}
-                    pagination={{
-                        ...pagination,
-                        onChange: (page: number, pageSize: number) => {
-                            getList(page, pageSize);
-                        },
-                    }}
-                    rowSelection={{
-                        selectedRowKeys: selectedRowDeleteKeys,
-                        onChange: (selectedRowKeys: React.Key[]) => setSelectedRowDeleteKeys(selectedRowKeys.map(value => value.toString()))
-                    }}
-                /> */}
 
                 <ProTable<BranchModel>
                     dataSource={list}
@@ -311,11 +312,32 @@ function Branch() {
                                 <PlusOutlined />
                                 Tạo mới
                             </Button>
-                        </Permission>
+                        </Permission>,
+                        // <Permission noNode navigation={layoutCode.catalogBranch as string} bitPermission={PermissionAction.Delete}>
+                        //     <Button htmlType='button' danger type='default' onClick={() => multiDeleteRecord()}>
+                        //         <DeleteOutlined />
+                        //         Xóa
+                        //     </Button>
+                        // </Permission>
                     ]}
                 />
             </Card>
-
+            {showCreateForm && (
+                <CreateBranch
+                    open={showCreateForm}
+                    setOpen={setShowCreateForm}
+                    reload={searchFormSubmit}
+                />
+            )}
+            {showEditForm && (
+                <EditBranch
+                    open={showEditForm}
+                    setOpen={setShowEditForm}
+                    reload={searchFormSubmit}
+                    BranchEdit={branchEdit}
+                    initLoadingModal={initLoadingModal}
+                />
+            )}
         </div>
     );
 }

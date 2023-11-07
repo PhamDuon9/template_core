@@ -1,6 +1,6 @@
 import { SelectOptionModel } from '@/@types/data';
 import { Code, UserModel } from '@/apis';
-import { getDepartment2 } from '@/apis/services/DepartmentService';
+import { getDepartmentTree } from '@/apis/services/DepartmentService';
 import { getRoleValueTypes } from '@/apis/services/RoleService';
 import { deleteUser, deleteManyUser, getUser, getUserById, toggleStatus } from '@/apis/services/UserService';
 import Permission from '@/components/Permission';
@@ -28,8 +28,6 @@ import { useRecoilValue } from 'recoil';
 import CreateUser from './create';
 import EditUser from './edit';
 import UserRole from './user-role';
-
-var checkedList: string[] = [];
 
 function User() {
   // Default
@@ -105,13 +103,14 @@ function User() {
   //Function
   const onHandleShowModalCreate = async () => {
     setShowLoadingCreate(true)
-    const responseIIGDepartment: ResponseData = await getDepartment2();
+    const responseIIGDepartment: ResponseData = await getDepartmentTree();
 
     if (responseIIGDepartment.code === Code._200) {
       const stateDispatcher = {
         iigdepartments: responseIIGDepartment.data ?? []
       };
       dispatch(stateDispatcher);
+      setShowCreateForm(true)
       setShowLoadingCreate(false)
 
     }
@@ -156,7 +155,7 @@ function User() {
       okText: 'Đồng ý',
       cancelText: 'Hủy',
       onOk: async () => {
-        const response = await deleteManyUser(undefined,selectedRowDeleteKeys);
+        const response = await deleteManyUser(undefined, selectedRowDeleteKeys);
         setShowLoadingDelete(false)
         if (response.code === Code._200) {
           message.success(response.message)
@@ -217,7 +216,7 @@ function User() {
   const getUserCurrentEdit = async (id: string): Promise<void> => {
     setInitLoadingModal(true)
     const response: ResponseData = await getUserById(id);
-    const responseIIGDepartment: ResponseData = await getDepartment2();
+    const responseIIGDepartment: ResponseData = await getDepartmentTree();
     if (response && response.code === Code._200) {
       const getUserCurrent = response.data as UserModel ?? {};
       const stateDispatcher = {
@@ -271,7 +270,7 @@ function User() {
       render: (_, record) => (
         <Space>
           <Permission navigation={layoutCode.user} bitPermission={PermissionAction.Edit} noNode={<></>}>
-            <Button type="primary" size={"small"} loading={initLoadingModal} onClick={() => onHandleShowModalEdit(true, record.id ?? "")}>
+            <Button type="default" size={"small"} loading={initLoadingModal} onClick={() => onHandleShowModalEdit(true, record.id ?? "")}>
               <Tooltip title="Chỉnh sửa">
                 <EditOutlined />
               </Tooltip>
@@ -285,7 +284,7 @@ function User() {
           </Button>
 
           <Permission navigation={layoutCode.user} bitPermission={PermissionAction.Delete} noNode={<></>}>
-            <Button type='dashed' disabled={record.id === user.id} size={"small"} loading={false} onClick={() => deleteRecord(record.id || '')}>
+            <Button type='default' disabled={record.id === user.id} size={"small"} loading={false} onClick={() => deleteRecord(record.id || '')}>
               <Tooltip title="Xóa">
                 <DeleteOutlined />
               </Tooltip>
@@ -303,7 +302,6 @@ function User() {
         title={
           <>
             <Row gutter={16} justify='start'>
-
               <Col span={24} className='gutter-row'>
                 <Collapse>
                   <Panel header='Tìm kiếm' key='1'>

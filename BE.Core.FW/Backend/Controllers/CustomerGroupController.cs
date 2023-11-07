@@ -1,31 +1,22 @@
-﻿using Backend.Business;
-using Backend.Business.Auth;
-using Backend.Business.Branch;
-using Backend.Business.Department;
-using Backend.Business.Navigation;
-using Backend.Business.User;
+﻿using Microsoft.AspNetCore.Mvc;
+using Backend.Business.CustomerGroup;
 using Backend.Infrastructure.Utils;
-using Backend.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
-    // [Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
-    public class BranchController : ControllerBase
+    public class CustomerGroupController : Controller
     {
-        private readonly IBranchHandler _handler;
+        private readonly ICustomerGroupHandler _handler;
 
-        public BranchController(IBranchHandler handler)
+        public CustomerGroupController(ICustomerGroupHandler handler)
         {
             _handler = handler;
         }
 
         [HttpPost]
-        public ResponseData Create([FromBody] BranchModel model)
+        public ResponseData Create([FromBody] CustomerGroupModel model)
         {
             return _handler.Create(model);
         }
@@ -59,7 +50,7 @@ namespace Backend.Controllers
 
         [HttpPut]
         [Route("id")]
-        public ResponseData Update(Guid id, BranchModel model)
+        public ResponseData Update(Guid id, CustomerGroupModel model)
         {
             return _handler.Update(id, model);
         }

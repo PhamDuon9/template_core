@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Backend.Business;
+using Backend.Business.AdministrativeUnit;
+using Backend.Business.CustomerGroup;
 using Backend.Business.DividingRoom;
 using Backend.Business.Navigation;
 using Backend.Business.Policy;
@@ -29,6 +31,8 @@ namespace Backend.Infrastructure.Utils
             CreateMap<SysCustomerType, CustomerTypeModel>().ReverseMap();
             CreateMap<SysCustomer, CustomerModel>().ReverseMap();
             CreateMap<SysBranch, BranchModel>().ReverseMap();
+            CreateMap<SysCustomerGroup, CustomerGroupModel>().ReverseMap();
+            CreateMap<SysAdministrativeUnit, AdministrativeUnitModel>().ReverseMap();
         }
     }
 }

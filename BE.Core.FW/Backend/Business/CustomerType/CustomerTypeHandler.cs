@@ -128,16 +128,10 @@ public class CustomerTypeHandler : ICustomerTypeHandler
             {
                 return new ResponseDataError(Code.NotFound, "Id not found");
             }
-            if (!string.IsNullOrEmpty(model.Code))
-                iigDepartmentData.Code = model.Code;
-            if (!string.IsNullOrEmpty(model.Name))
-                iigDepartmentData.Name = model.Name;
-
-            if (!string.IsNullOrEmpty(model.Description))
-                iigDepartmentData.Description = model.Description;
-
+            iigDepartmentData.Code = model.Code;
+            iigDepartmentData.Name = model.Name;
+            iigDepartmentData.Description = model.Description;
             unitOfWork.Repository<SysCustomerType>().Update(iigDepartmentData);
-
             unitOfWork.Save();
             return new ResponseData(Code.Success, "");
         }

@@ -1,4 +1,4 @@
-import { Code, DepartmentModel } from '@/apis';
+import { Code } from '@/apis';
 import { PaginationConfig, ResponseData } from '@/utils/request';
 import {
     Button,
@@ -19,18 +19,19 @@ import { PermissionAction, layoutCode } from '@/utils/constants';
 import {
     ConvertOptionSelectModel
 } from '@/utils/convert';
+import { OptionModel, SelectOptionModel } from '@/@types/data';
+import { AdministrativeUnitModel } from '@/apis/models/AdministrativeUnitModel';
 import { DeleteOutlined, DownOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { deleteDepartment, getDepartment, getDepartmentById, getDepartmentTree } from '@/apis/services/DepartmentService';
-import { getBranch } from '@/apis/services/BranchService';
+import { deleteAdministrativeUnit, getAdministrativeUnit, getAdministrativeUnitById, getAdministrativeUnitTree } from '@/apis/services/AdministrativeUnitService';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
-import CreateDepartment from './create';
-import EditDepartment from './edit';
-import { OptionModel, SelectOptionModel } from '@/@types/data';
-function Department() {
+import CreateAdministrativeUnit from './create';
+import EditAdministrativeUnit from './edit';
+
+function AdministrativeUnit() {
     //Default
     const [loading, setLoading] = useState<boolean>(false);
-    const [list, setList] = useState<DepartmentModel[]>([]);
+    const [list, setList] = useState<AdministrativeUnitModel[]>([]);
     const [pagination, setPagination] = useState<PaginationConfig>({
         total: 0,
         current: 1,
@@ -51,14 +52,16 @@ function Department() {
             const fieldsValue = await searchForm.validateFields();
             setLoading(true)
             const filter = {
-                page: current,
-                size: pageSize,
+                pageNumber: current,
+                pageSize: pageSize,
                 textSearch: fieldsValue.TextSearch,
+                ParentId: fieldsValue.ParentId ? fieldsValue.ParentId : undefined,
             }
-            const response: ResponseData = await getDepartment(
+            const response: ResponseData = await getAdministrativeUnit(
                 JSON.stringify(filter)
             );
-            setList((response.data || []) as DepartmentModel[]);
+            console.log(response.data)
+            setList((response.data || []) as AdministrativeUnitModel[]);
             setPagination({
                 ...pagination,
                 current,
@@ -79,12 +82,11 @@ function Department() {
     }, []);
     const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
     const [showEditForm, setShowEditForm] = useState<boolean>(false);
-    const [departmentEdit, setDepartmentEdit] = useState<DepartmentModel>({});
+    const [administrativeUnitEdit, setAdministrativeUnitEdit] = useState<AdministrativeUnitModel>({});
     const [initLoadingModal, setInitLoadingModal] = useState<boolean>(false);
     const initState = {
-        departmentEdit: {},
-        branchs: [],
-        departments: [],
+        administrativeUnitEdit: {},
+        administrativeUnits: [],
     };
     const [state, dispatch] = useReducer<(prevState: any, updatedProperty: any) => any>(
         (prevState: any, updatedProperty: any) => ({
@@ -99,47 +101,34 @@ function Department() {
         setLoading(true)
         // setShowCreateForm(true)
         // setLoading(false)
-        const responseDepartment: ResponseData = await getDepartmentTree();
-        const responseBranch: ResponseData = await getBranch();
-        const optionBranches = ConvertOptionSelectModel(responseBranch.data as OptionModel[]);
+        const responseAdministrativeUnit: ResponseData = await getAdministrativeUnitTree();
         const stateDispatcher = {
-            branchs: [{
-                key: 'Default',
-                label: '-Chọn-',
-                value: '',
-            } as SelectOptionModel].concat(optionBranches),
-            departments: responseDepartment.data ?? []
+            administrativeUnits: responseAdministrativeUnit.data ?? []
         };
         dispatch(stateDispatcher);
         setShowCreateForm(true)
         setLoading(false)
     };
     const onHandleShowModelEdit = async (id: string) => {
-        await getDepartmentCurrentEdit(id)
+        setLoading(true)
+        await getAdministrativeUnitCurrentEdit(id)
+        setLoading(false)
     }
     /**
    * Lấy thông tin người dùng cần update
    * @param id 
    */
-    const getDepartmentCurrentEdit = async (id: string): Promise<void> => {
+    const getAdministrativeUnitCurrentEdit = async (id: string): Promise<void> => {
         setInitLoadingModal(true)
-        const response: ResponseData = await getDepartmentById(id);
-        const responseDepartment: ResponseData = await getDepartmentTree();
-        const responseBranch: ResponseData = await getBranch();
-        console.log(responseBranch)
+        const response: ResponseData = await getAdministrativeUnitById(id);
+        const responseAdministrativeUnit: ResponseData = await getAdministrativeUnitTree();
         if (response && response.code === Code._200) {
-            const DepartmentCurrent = response.data as DepartmentModel ?? {};
-            const optionBranches = ConvertOptionSelectModel(responseBranch.data as OptionModel[]);
+            const AdministrativeUnitCurrent = response.data as AdministrativeUnitModel ?? {};
             const stateDispatcher = {
-                branchs: [{
-                    key: 'Default',
-                    label: '-Chọn-',
-                    value: '',
-                } as SelectOptionModel].concat(optionBranches),
-                departments: responseDepartment.data ?? []
+                administrativeUnits: responseAdministrativeUnit.data ?? []
             };
             dispatch(stateDispatcher);
-            setDepartmentEdit(DepartmentCurrent)
+            setAdministrativeUnitEdit(AdministrativeUnitCurrent)
             setInitLoadingModal(false)
             setShowEditForm(true);
             
@@ -152,7 +141,7 @@ function Department() {
             okText: 'Đồng ý',
             cancelText: 'Hủy',
             onOk: async () => {
-                const response = await deleteDepartment(id);
+                const response = await deleteAdministrativeUnit(id);
                 if (response.code === Code._200) {
                     message.success(response.message)
                     getList(1);
@@ -191,7 +180,7 @@ function Department() {
 
 
 
-    const columns: ProColumns<DepartmentModel>[] = [
+    const columns: ProColumns<AdministrativeUnitModel>[] = [
         {
             title: 'STT',
             dataIndex: 'index',
@@ -199,24 +188,14 @@ function Department() {
             render: (_, record, index) => <>{(pagination.current - 1) * pagination.pageSize + index + 1}</>,
         },
         {
-            title: 'Mã phòng ban',
+            title: 'Mã đơn vị hành chính',
             dataIndex: 'code',
             render: (_, record) => <span>{record.code}</span>,
         },
         {
-            title: 'Tên phòng ban',
+            title: 'Tên đơn vị hành chính',
             dataIndex: 'name',
             render: (_, record) => <span>{record.name}</span>,
-        },
-        {
-            title: 'Tên chi nhánh',
-            dataIndex: 'branchName',
-            render: (_, record) => <span>{record.branchName}</span>,
-        },
-        {
-            title: 'Tính hoa hồng',
-            dataIndex: 'isCom',
-            render: (_, record) => <span> <Checkbox checked={record.isCom} disabled /></span>,
         },
         {
             title: 'Mô tả',
@@ -266,13 +245,13 @@ function Department() {
                                             <Row gutter={16} justify='start'>
                                                 <Col span={6}>
                                                     <Form.Item
-                                                        label={'Tên phòng ban'}
+                                                        label={'Tên đơn vị hành chính'}
                                                         labelCol={{ span: 24 }}
                                                         wrapperCol={{ span: 17 }}
                                                         name='TextSearch'
                                                     >
                                                         <Input
-                                                            placeholder='Tên phòng ban'
+                                                            placeholder='Tên đơn vị hành chính'
                                                             allowClear />
                                                     </Form.Item>
                                                 </Col>
@@ -295,7 +274,7 @@ function Department() {
                 }
                 extra={<div></div>}
             >
-                <ProTable<DepartmentModel>
+                <ProTable<AdministrativeUnitModel>
                     dataSource={list}
                     rowKey="id"
                     loading={loading}
@@ -328,22 +307,20 @@ function Department() {
             </Card>
 
             {showCreateForm && (
-                <CreateDepartment
+                <CreateAdministrativeUnit
                     open={showCreateForm}
                     setOpen={setShowCreateForm}
                     reload={searchFormSubmit}
-                    branches={state.branchs}
-                    departments={state.departments}
+                    administrativeUnits={state.administrativeUnits}
                 />
             )}
             {showEditForm && (
-                <EditDepartment
+                <EditAdministrativeUnit
                     open={showEditForm}
                     setOpen={setShowEditForm}
                     reload={searchFormSubmit}
-                    departmentEdit={departmentEdit}
-                    branches={state.branchs}
-                    departments={state.departments}
+                    administrativeUnitEdit={administrativeUnitEdit}
+                    administrativeUnits={state.administrativeUnits}
                     initLoadingModal={initLoadingModal}
                 />
             )}
@@ -352,4 +329,4 @@ function Department() {
     );
 }
 
-export default Department;
+export default AdministrativeUnit;

@@ -1,4 +1,5 @@
-import { Code, DepartmentModel } from '@/apis';
+import { Code } from '@/apis';
+import { CustomerGroupModel } from '@/apis/models/CustomerGroupModel';
 import { PaginationConfig, ResponseData } from '@/utils/request';
 import {
     Button,
@@ -11,26 +12,37 @@ import {
     Modal,
     Row,
     Space,
+    Typography,
     message
 } from 'antd';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
+
 import Permission from '@/components/Permission';
 import { PermissionAction, layoutCode } from '@/utils/constants';
 import {
     ConvertOptionSelectModel
 } from '@/utils/convert';
-import { DeleteOutlined, DownOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { deleteDepartment, getDepartment, getDepartmentById, getDepartmentTree } from '@/apis/services/DepartmentService';
-import { getBranch } from '@/apis/services/BranchService';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
-import CreateDepartment from './create';
-import EditDepartment from './edit';
-import { OptionModel, SelectOptionModel } from '@/@types/data';
-function Department() {
-    //Default
+import { useNavigate } from 'react-router-dom';
+import { deleteCustomerGroup, getCustomerGroup, deleteManyCustomerGroup, getCustomerGroupById } from '@/apis/services/CustomerGroupService';
+import CreateCustomerGroup from './create'
+import EditCustomerGroup from './edit'
+
+function CustomerGroup() {
+    // Load
+    const { Panel } = Collapse;
+    const initState = {
+        departments: [],
+    };
     const [loading, setLoading] = useState<boolean>(false);
-    const [list, setList] = useState<DepartmentModel[]>([]);
+    const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
+    const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+    const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+    const [showEditForm, setShowEditForm] = useState<boolean>(false);
+    const [customerGroupEdit, setCustomerGroupEdit] = useState<CustomerGroupModel>({});
+    const [initLoadingModal, setInitLoadingModal] = useState<boolean>(false);
+    const [list, setList] = useState<CustomerGroupModel[]>([]);
     const [pagination, setPagination] = useState<PaginationConfig>({
         total: 0,
         current: 1,
@@ -38,10 +50,122 @@ function Department() {
         showSizeChanger: true,
         showQuickJumper: true,
     });
+    const [selectedRowDeleteKeys, setSelectedRowDeleteKeys] = useState<string[]>([]);
+    const { Title, Paragraph, Text, Link } = Typography;
+    const [state, dispatch] = useReducer<(prevState: any, updatedProperty: any) => any>(
+        (prevState: any, updatedProperty: any) => ({
+            ...prevState,
+            ...updatedProperty,
+        }),
+        initState,
+    );
+
     const getList = async (current: number, pageSize: number = 20): Promise<void> => {
         setLoading(true);
         searchFormSubmit(current, pageSize);
         setLoading(false);
+    };
+    useEffect(() => {
+        const fnGetInitState = async () => {
+            // const responseProvinces: ResponseData = await getAministrativeDivisions();
+            // const responseDepartment: ResponseData = await getDepartment();
+
+            // const provinceOptions = ConvertOptionSelectModel(responseProvinces.data as ProvinceModel[]);
+            // const departmentOptions = ConvertOptionSelectModel(responseDepartment.data as OptionModel[]);
+            // const stateDispatcher = {
+            //     provinces: [{
+            //         key: 'Default',
+            //         label: '-Chọn-',
+            //         value: '',
+            //     }].concat(provinceOptions),
+            //     departments: [{
+            //         key: 'Default',
+            //         label: '-Chọn-',
+            //         value: '',
+            //     }].concat(departmentOptions)
+            // };
+            // dispatch(stateDispatcher);
+        }
+        fnGetInitState()
+        getList(1);
+    }, []);
+
+    const deleteRecord = (id: string) => {
+        Modal.confirm({
+            title: 'Cảnh báo',
+            content: `Xác nhận xóa bản ghi này?`,
+            okText: 'Đồng ý',
+            cancelText: 'Hủy',
+            onOk: async () => {
+                const response = await deleteCustomerGroup(id);
+                if (response.code === Code._200) {
+                    message.success(response.message)
+                    getList(1);
+                }
+                else {
+                    message.error(response.message)
+                }
+            },
+        });
+    };
+
+    const multiDeleteRecord = () => {
+        setLoadingDelete(true)
+        Modal.confirm({
+            title: 'Cảnh báo',
+            content: `Xác nhận xóa những bản ghi đã chọn?`,
+            okText: 'Đồng ý',
+            cancelText: 'Hủy',
+            onOk: async () => {
+                const response = await deleteManyCustomerGroup(selectedRowDeleteKeys);
+                setLoadingDelete(false)
+                if (response.code === Code._200) {
+                    message.success(response.message)
+                    setSelectedRowDeleteKeys([])
+                    getList(1);
+                }
+                else {
+                    message.error(response.message)
+                }
+            },
+        });
+    };
+
+    const onHandleShowModelCreate = async () => {
+        setLoadingCreate(true)
+        setShowCreateForm(true)
+        setLoadingCreate(false)
+        // const responseIIGDepartment: ResponseData = await getDepartment2();
+        // if (responseIIGDepartment.code === Code._200) {
+        //     const stateDispatcher = {
+        //         iigdepartments: responseIIGDepartment.data ?? []
+        //     };
+        //     dispatch(stateDispatcher);
+        //     setShowCreateForm(true)
+        //     setLoadingCreate(false)
+
+        // }
+        // else {
+        //     message.error(responseIIGDepartment.message)
+        // }
+    };
+    const onHandleShowModalEdit = async (userId: string) => {
+        await getCustomerGroupCurrentEdit(userId)
+    };
+
+    /**
+   * Lấy thông tin người dùng cần update
+   * @param id 
+   */
+    const getCustomerGroupCurrentEdit = async (id: string): Promise<void> => {
+        setInitLoadingModal(true)
+        const response: ResponseData = await getCustomerGroupById(id);
+        if (response && response.code === Code._200) {
+            const getCustomerGroupCurrent = response.data as CustomerGroupModel ?? {};
+            setCustomerGroupEdit(getCustomerGroupCurrent)
+            setInitLoadingModal(false)
+            setShowEditForm(true);
+        }
     };
 
     // searchForm
@@ -51,14 +175,14 @@ function Department() {
             const fieldsValue = await searchForm.validateFields();
             setLoading(true)
             const filter = {
-                page: current,
-                size: pageSize,
+                pageNumber: current,
+                pageSize: pageSize,
                 textSearch: fieldsValue.TextSearch,
             }
-            const response: ResponseData = await getDepartment(
+            const response: ResponseData = await getCustomerGroup(
                 JSON.stringify(filter)
             );
-            setList((response.data || []) as DepartmentModel[]);
+            setList((response.data || []) as CustomerGroupModel[]);
             setPagination({
                 ...pagination,
                 current,
@@ -72,126 +196,8 @@ function Department() {
         }
     };
 
-    //Detail
-    const { Panel } = Collapse;
-    useEffect(() => {
-        getList(1);
-    }, []);
-    const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-    const [showEditForm, setShowEditForm] = useState<boolean>(false);
-    const [departmentEdit, setDepartmentEdit] = useState<DepartmentModel>({});
-    const [initLoadingModal, setInitLoadingModal] = useState<boolean>(false);
-    const initState = {
-        departmentEdit: {},
-        branchs: [],
-        departments: [],
-    };
-    const [state, dispatch] = useReducer<(prevState: any, updatedProperty: any) => any>(
-        (prevState: any, updatedProperty: any) => ({
-            ...prevState,
-            ...updatedProperty,
-        }),
-        initState,
-    );
 
-    //Function
-    const onHandleShowModelCreate = async () => {
-        setLoading(true)
-        // setShowCreateForm(true)
-        // setLoading(false)
-        const responseDepartment: ResponseData = await getDepartmentTree();
-        const responseBranch: ResponseData = await getBranch();
-        const optionBranches = ConvertOptionSelectModel(responseBranch.data as OptionModel[]);
-        const stateDispatcher = {
-            branchs: [{
-                key: 'Default',
-                label: '-Chọn-',
-                value: '',
-            } as SelectOptionModel].concat(optionBranches),
-            departments: responseDepartment.data ?? []
-        };
-        dispatch(stateDispatcher);
-        setShowCreateForm(true)
-        setLoading(false)
-    };
-    const onHandleShowModelEdit = async (id: string) => {
-        await getDepartmentCurrentEdit(id)
-    }
-    /**
-   * Lấy thông tin người dùng cần update
-   * @param id 
-   */
-    const getDepartmentCurrentEdit = async (id: string): Promise<void> => {
-        setInitLoadingModal(true)
-        const response: ResponseData = await getDepartmentById(id);
-        const responseDepartment: ResponseData = await getDepartmentTree();
-        const responseBranch: ResponseData = await getBranch();
-        console.log(responseBranch)
-        if (response && response.code === Code._200) {
-            const DepartmentCurrent = response.data as DepartmentModel ?? {};
-            const optionBranches = ConvertOptionSelectModel(responseBranch.data as OptionModel[]);
-            const stateDispatcher = {
-                branchs: [{
-                    key: 'Default',
-                    label: '-Chọn-',
-                    value: '',
-                } as SelectOptionModel].concat(optionBranches),
-                departments: responseDepartment.data ?? []
-            };
-            dispatch(stateDispatcher);
-            setDepartmentEdit(DepartmentCurrent)
-            setInitLoadingModal(false)
-            setShowEditForm(true);
-            
-        }
-    };
-    const deleteRecord = (id: string) => {
-        Modal.confirm({
-            title: 'Cảnh báo',
-            content: `Xác nhận xóa bản ghi này?`,
-            okText: 'Đồng ý',
-            cancelText: 'Hủy',
-            onOk: async () => {
-                const response = await deleteDepartment(id);
-                if (response.code === Code._200) {
-                    message.success(response.message)
-                    getList(1);
-                }
-                else {
-                    message.error(response.message)
-                }
-            },
-        });
-    };
-
-    const multiDeleteRecord = () => {
-        setLoading(true)
-        Modal.confirm({
-            title: 'Cảnh báo',
-            content: `Xác nhận xóa những bản ghi đã chọn?`,
-            okText: 'Đồng ý',
-            cancelText: 'Hủy',
-            // onOk: async () => {
-            //     const response = await deleteManyDivision(selectedRowDeleteKeys);
-            //     setLoading(false)
-            //     if (response.code === Code._200) {
-            //         message.success(response.message)
-            //         setSelectedRowDeleteKeys([])
-            //         getList(1);
-            //     }
-            //     else {
-            //         message.error(response.message)
-            //     }
-            // },
-        });
-    };
-
-
-
-
-
-
-    const columns: ProColumns<DepartmentModel>[] = [
+    const columns: ProColumns<CustomerGroupModel>[] = [
         {
             title: 'STT',
             dataIndex: 'index',
@@ -199,24 +205,14 @@ function Department() {
             render: (_, record, index) => <>{(pagination.current - 1) * pagination.pageSize + index + 1}</>,
         },
         {
-            title: 'Mã phòng ban',
+            title: 'Mã nhóm khách hàng',
             dataIndex: 'code',
             render: (_, record) => <span>{record.code}</span>,
         },
         {
-            title: 'Tên phòng ban',
+            title: 'Tên nhóm khách hàng',
             dataIndex: 'name',
             render: (_, record) => <span>{record.name}</span>,
-        },
-        {
-            title: 'Tên chi nhánh',
-            dataIndex: 'branchName',
-            render: (_, record) => <span>{record.branchName}</span>,
-        },
-        {
-            title: 'Tính hoa hồng',
-            dataIndex: 'isCom',
-            render: (_, record) => <span> <Checkbox checked={record.isCom} disabled /></span>,
         },
         {
             title: 'Mô tả',
@@ -231,13 +227,13 @@ function Department() {
             width: 300,
             render: (_, record) => (
                 <Space>
-                    <Permission noNode navigation={layoutCode.catalogDepartment as string} bitPermission={PermissionAction.Edit}>
-                        <Button type="default" size={"small"} title='Cập nhật' loading={false} onClick={() => onHandleShowModelEdit(record.id || '')}>
+                    <Permission noNode navigation={layoutCode.catalogCustomerGroup as string} bitPermission={PermissionAction.Edit}>
+                        <Button type="dashed" title='Cập nhật' loading={false} onClick={() => onHandleShowModalEdit(record.id || '')}>
                             <EditOutlined />
                         </Button>
                     </Permission>
-                    <Permission noNode navigation={layoutCode.catalogDepartment as string} bitPermission={PermissionAction.Delete}>
-                        <Button type="default" size={"small"} title='Xóa' loading={false} onClick={() => deleteRecord(record.id || '')}>
+                    <Permission noNode navigation={layoutCode.catalogCustomerGroup as string} bitPermission={PermissionAction.Delete}>
+                        <Button danger title='Xóa' loading={false} onClick={() => deleteRecord(record.id || '')}>
                             <DeleteOutlined />
                         </Button>
                     </Permission>
@@ -249,6 +245,7 @@ function Department() {
     return (
         <div className='layout-main-content'>
             <Card
+
                 bordered={false}
                 title={
                     <>
@@ -263,21 +260,20 @@ function Department() {
                                                 ['TextSearch']: '',
                                             }}
                                         >
-                                            <Row gutter={16} justify='start'>
+                                            <Row gutter={24} justify='start'>
                                                 <Col span={6}>
                                                     <Form.Item
-                                                        label={'Tên phòng ban'}
+                                                        // label={'Tên chi nhánh'}
                                                         labelCol={{ span: 24 }}
                                                         wrapperCol={{ span: 17 }}
                                                         name='TextSearch'
                                                     >
                                                         <Input
-                                                            placeholder='Tên phòng ban'
+                                                            placeholder='Tên chi nhánh'
                                                             allowClear />
                                                     </Form.Item>
                                                 </Col>
-
-                                                <Col span={24}>
+                                                <Col span={24} style={{float:'right'}}>
                                                     <Button type='primary' htmlType='submit' onClick={() => searchFormSubmit()}>
                                                         Tìm kiếm
                                                     </Button>
@@ -295,7 +291,8 @@ function Department() {
                 }
                 extra={<div></div>}
             >
-                <ProTable<DepartmentModel>
+
+                <ProTable<CustomerGroupModel>
                     dataSource={list}
                     rowKey="id"
                     loading={loading}
@@ -311,13 +308,13 @@ function Department() {
                     dateFormatter="string"
                     headerTitle="Tiêu đề"
                     toolBarRender={() => [
-                        <Permission noNode navigation={layoutCode.catalogDepartment as string} bitPermission={PermissionAction.Add}>
+                        <Permission noNode navigation={layoutCode.catalogCustomerGroup as string} bitPermission={PermissionAction.Add}>
                             <Button htmlType='button' type='default' onClick={() => onHandleShowModelCreate()}>
                                 <PlusOutlined />
                                 Tạo mới
                             </Button>
                         </Permission>,
-                        // <Permission noNode navigation={layoutCode.catalogDepartment as string} bitPermission={PermissionAction.Delete}>
+                        // <Permission noNode navigation={layoutCode.catalogCustomerGroup as string} bitPermission={PermissionAction.Delete}>
                         //     <Button htmlType='button' danger type='default' onClick={() => multiDeleteRecord()}>
                         //         <DeleteOutlined />
                         //         Xóa
@@ -326,30 +323,24 @@ function Department() {
                     ]}
                 />
             </Card>
-
             {showCreateForm && (
-                <CreateDepartment
+                <CreateCustomerGroup
                     open={showCreateForm}
                     setOpen={setShowCreateForm}
                     reload={searchFormSubmit}
-                    branches={state.branchs}
-                    departments={state.departments}
                 />
             )}
             {showEditForm && (
-                <EditDepartment
+                <EditCustomerGroup
                     open={showEditForm}
                     setOpen={setShowEditForm}
                     reload={searchFormSubmit}
-                    departmentEdit={departmentEdit}
-                    branches={state.branchs}
-                    departments={state.departments}
+                    customerGroupEdit={customerGroupEdit}
                     initLoadingModal={initLoadingModal}
                 />
             )}
-
         </div>
     );
 }
 
-export default Department;
+export default CustomerGroup;

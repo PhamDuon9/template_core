@@ -1,31 +1,22 @@
-﻿using Backend.Business;
-using Backend.Business.Auth;
-using Backend.Business.Branch;
-using Backend.Business.Department;
-using Backend.Business.Navigation;
-using Backend.Business.User;
+﻿using Backend.Business.AdministrativeUnit;
 using Backend.Infrastructure.Utils;
-using Backend.Model;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
-    // [Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
-    public class BranchController : ControllerBase
+    public class AdministrativeUnitController : ControllerBase
     {
-        private readonly IBranchHandler _handler;
+        private readonly IAdministrativeUnitHandler _handler;
 
-        public BranchController(IBranchHandler handler)
+        public AdministrativeUnitController(IAdministrativeUnitHandler handler)
         {
             _handler = handler;
         }
 
         [HttpPost]
-        public ResponseData Create([FromBody] BranchModel model)
+        public ResponseData Create([FromBody] AdministrativeUnitModel model)
         {
             return _handler.Create(model);
         }
@@ -35,13 +26,6 @@ namespace Backend.Controllers
         public ResponseData Delete(Guid id)
         {
             return _handler.Delete(id);
-        }
-
-        [HttpDelete]
-        [Route("DeleteMany")]
-        public ResponseData DeleteMany([FromBody] List<string> ids)
-        {
-            return _handler.DeleteMany(ids);
         }
 
         [HttpGet]
@@ -57,9 +41,24 @@ namespace Backend.Controllers
             return _handler.GetById(id);
         }
 
+        [HttpGet]
+        [Route("parentid")]
+        public ResponseData GetByParentId(Guid parentId)
+        {
+            return _handler.GetByParentId(parentId);
+        }
+
+        [HttpGet]
+        [Route("tree")]
+        public ResponseData GetTree()
+        {
+            return _handler.GetTree();
+        }
+
+
         [HttpPut]
         [Route("id")]
-        public ResponseData Update(Guid id, BranchModel model)
+        public ResponseData Update(Guid id, AdministrativeUnitModel model)
         {
             return _handler.Update(id, model);
         }

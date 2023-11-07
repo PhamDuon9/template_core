@@ -81,7 +81,7 @@ export const deleteCustomerType = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getCustomerType1 = (
+export const getCustomerTypeById = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {

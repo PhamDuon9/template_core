@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BranchModel } from "../models/BranchModel";
+import type { AdministrativeUnitModel } from "../models/AdministrativeUnitModel";
 import type { ResponseData } from "../models/ResponseData";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import {
@@ -16,13 +16,13 @@ import {
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const postBranch = (
+export const postAdministrativeUnit = (
   tenant?: string,
-  requestBody?: BranchModel
+  requestBody?: AdministrativeUnitModel
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "POST",
-    path: `/Branch`,
+    path: `/AdministrativeUnit`,
     headers: {
       Tenant: tenant,
     },
@@ -37,13 +37,13 @@ export const postBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getBranch = (
+export const getAdministrativeUnit = (
   filter: string = "{}",
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "GET",
-    path: `/Branch`,
+    path: `/AdministrativeUnit`,
     headers: {
       Tenant: tenant,
     },
@@ -59,40 +59,19 @@ export const getBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const deleteBranch = (
+export const deleteAdministrativeUnit = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "DELETE",
-    path: `/Branch/id`,
+    path: `/AdministrativeUnit/id`,
     headers: {
       Tenant: tenant,
     },
     query: {
       id: id,
     },
-  });
-};
-
-/**
- * @param ids
- * @param tenant
- * @returns ResponseData Success
- * @throws ApiError
- */
-export const deleteManyBranch = (
-  requestBody?: Array<string>,
-  tenant?: string
-): CancelablePromise<ResponseData> => {
-  return __request({
-    method: "DELETE",
-    path: `/Branch/DeleteMany`,
-    headers: {
-      Tenant: tenant,
-    },
-    body: requestBody,
-    mediaType: "application/json",
   });
 };
 
@@ -102,18 +81,40 @@ export const deleteManyBranch = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getBranchById = (
+export const getAdministrativeUnitById = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "GET",
-    path: `/Branch/id`,
+    path: `/AdministrativeUnit/id`,
     headers: {
       Tenant: tenant,
     },
     query: {
       id: id,
+    },
+  });
+};
+
+/**
+ * @param parentId
+ * @param tenant
+ * @returns ResponseData Success
+ * @throws ApiError
+ */
+export const getAdministrativeUnitByParentId = (
+  parentId?: string,
+  tenant?: string
+): CancelablePromise<ResponseData> => {
+  return __request({
+    method: "GET",
+    path: `/AdministrativeUnit/parentid`,
+    headers: {
+      Tenant: tenant,
+    },
+    query: {
+      parentId: parentId,
     },
   });
 };
@@ -125,14 +126,14 @@ export const getBranchById = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const putBranch = (
+export const putAdministrativeUnit = (
   id?: string,
   tenant?: string,
-  requestBody?: BranchModel
+  requestBody?: AdministrativeUnitModel
 ): CancelablePromise<ResponseData> => {
   return __request({
     method: "PUT",
-    path: `/Branch/id`,
+    path: `/AdministrativeUnit/id`,
     headers: {
       Tenant: tenant,
     },
@@ -144,4 +145,20 @@ export const putBranch = (
   });
 };
 
+/**
+ * @param tenant
+ * @returns ResponseData Success
+ * @throws ApiError
+ */
+export const getAdministrativeUnitTree = (
+  tenant?: string
+): CancelablePromise<ResponseData> => {
+  return __request({
+    method: "GET",
+    path: `/AdministrativeUnit/tree`,
+    headers: {
+      Tenant: tenant,
+    },
+  });
+};
 

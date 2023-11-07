@@ -1,7 +1,9 @@
 using Backend.Business.AdministrativeDivision;
+using Backend.Business.AdministrativeUnit;
 using Backend.Business.Auth;
 using Backend.Business.Branch;
 using Backend.Business.Customer;
+using Backend.Business.CustomerGroup;
 using Backend.Business.Department;
 using Backend.Business.Mailing;
 using Backend.Business.Navigation;
@@ -27,6 +29,7 @@ internal static class Startup
             .AddScoped<IEmailHandler, EmailHandler>()
             .AddScoped<IAuthHandler, AuthHandler>()
             .AddScoped<IBranchHandler, BranchHandler>()
+            .AddScoped<ICustomerGroupHandler, CustomerGroupHandler>()
             .AddScoped<IProductCategoryHandler, ProductCategoryHandler>()
             .AddScoped<IProductTypeHandler, ProductTypeHandler>()
             .AddScoped<IProductHandler, ProductHandler>()
@@ -34,6 +37,7 @@ internal static class Startup
             .AddScoped<ICustomerTypeHandler, CustomerTypeHandler>()
             .AddScoped<IAdministrativeDivisionHandler, AdministrativeDivisionHandler>()
             .AddScoped<ICustomerHandler, CustomerHandler>()
-            .AddScoped<IDepartmentHandler, DepartmentHandler>();
+            .AddScoped<IDepartmentHandler, DepartmentHandler>()
+            .AddScoped<IAdministrativeUnitHandler, AdministrativeUnitHandler>();
     }
 }

@@ -353,11 +353,6 @@ namespace Backend.Business.User
                     return new ResponseDataError(Code.BadRequest, "Filter invalid");
                 using UnitOfWork unitOfWork = new(_httpContextAccessor);
 
-                //var iigDepartmentQuery = unitOfWork.Repository<SysDepartment>().GetAll();
-
-                //var userData = unitOfWork.Repository<SysUser>().GetQueryable(
-                //    g => string.IsNullOrEmpty(filterModel.textSearch) || (g.Fullname.ToLower().Contains(filterModel.textSearch.Trim().ToLower()) || g.Username.ToLower().Contains(filterModel.textSearch.Trim().ToLower()))
-                //    ).OrderByDescending(g => g.CreatedOnDate).Skip((filterModel.pageNumber - 1) * filterModel.pageSize).Take(filterModel.pageSize);
                 var result = (from user in unitOfWork.Repository<SysUser>().dbSet
                               join role in unitOfWork.Repository<SysRole>().dbSet on user.RoleId equals role.Id into userRoleDefault
                               from userRoleTable in userRoleDefault.DefaultIfEmpty()
@@ -383,10 +378,6 @@ namespace Backend.Business.User
                     )?.Count() ?? 0;
                 int totalPage = (int)Math.Ceiling((decimal)countTotal / filterModel.pageSize);
                 var pagination = new Pagination(filterModel.pageNumber, filterModel.pageSize, countTotal, totalPage);
-                //foreach (var item in result)
-                //{
-                //    item.DepartmentName = iigDepartmentQuery.FirstOrDefault(g => g.Id == item.DepartmentId)?.Name;
-                //}
                 return new PageableData<List<UserModel>>(result, pagination, Code.Success, "");
             }
             catch (Exception exception)

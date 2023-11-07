@@ -1,4 +1,4 @@
-import { PICModel } from "@/apis/models/toefl-challenge/PICModel";
+import { RepresentativeInfoModel } from "@/apis/models/RepresentativeInfo";
 import { Input, InputNumber, Form } from "antd";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -6,7 +6,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     dataIndex: string;
     title: any;
     inputType: 'number' | 'text';
-    record: PICModel;
+    record: RepresentativeInfoModel;
     index: number;
     children: React.ReactNode;
 }

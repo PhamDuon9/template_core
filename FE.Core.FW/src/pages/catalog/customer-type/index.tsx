@@ -15,14 +15,16 @@ import {
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import { Code } from '@/apis';
-import { deleteManyDivision } from '@/apis/services/toefl-challenge/DivisionService';
 import Permission from '@/components/Permission';
 import { PermissionAction, layoutCode } from '@/utils/constants';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 import { useNavigate } from 'react-router-dom';
 import { CustomerTypeModel } from '@/apis/models/CustomerTypeModel';
-import { deleteCustomerType, getCustomerType } from '@/apis/services/CustomerTypeService';
+import { deleteCustomerType, getCustomerType, getCustomerTypeById } from '@/apis/services/CustomerTypeService';
+import CreateCustomerType from './create'
+import EditCustomerType from './edit'
+
 function CustomerType() {
     const navigate = useNavigate();
     // Load
@@ -31,7 +33,12 @@ function CustomerType() {
         departments: [],
     };
     const [loading, setLoading] = useState<boolean>(false);
+    const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
     const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+    const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+    const [showEditForm, setShowEditForm] = useState<boolean>(false);
+    const [customerTypeEdit, setCustomerTypeEdit] = useState<CustomerTypeModel>({});
+    const [initLoadingModal, setInitLoadingModal] = useState<boolean>(false);
     const [list, setList] = useState<CustomerTypeModel[]>([]);
     const [pagination, setPagination] = useState<PaginationConfig>({
         total: 0,
@@ -40,8 +47,7 @@ function CustomerType() {
         showSizeChanger: true,
         showQuickJumper: true,
     });
-    const [selectedRowDeleteKeys, setSelectedRowDeleteKeys] = useState<string[]>([]);
-    const { Title, Paragraph, Text, Link } = Typography;
+
     const [state, dispatch] = useReducer<(prevState: any, updatedProperty: any) => any>(
         (prevState: any, updatedProperty: any) => ({
             ...prevState,
@@ -107,22 +113,43 @@ function CustomerType() {
             okText: 'Đồng ý',
             cancelText: 'Hủy',
             onOk: async () => {
-                const response = await deleteManyDivision(selectedRowDeleteKeys);
-                setLoadingDelete(false)
-                if (response.code === Code._200) {
-                    message.success(response.message)
-                    setSelectedRowDeleteKeys([])
-                    getList(1);
-                }
-                else {
-                    message.error(response.message)
-                }
+                // const response = await deleteManyDivision(selectedRowDeleteKeys);
+                // setLoadingDelete(false)
+                // if (response.code === Code._200) {
+                //     message.success(response.message)
+                //     setSelectedRowDeleteKeys([])
+                //     getList(1);
+                // }
+                // else {
+                //     message.error(response.message)
+                // }
             },
         });
     };
 
     const onHandleShowModelCreate = async () => {
-        navigate(`/catalog/customer-type/create`)
+        setLoadingCreate(true)
+        setShowCreateForm(true)
+        setLoadingCreate(false)
+    };
+
+    const onHandleShowModalEdit = async (userId: string) => {
+        await getCustomerGroupCurrentEdit(userId)
+    };
+
+    /**
+   * Lấy thông tin người dùng cần update
+   * @param id 
+   */
+    const getCustomerGroupCurrentEdit = async (id: string): Promise<void> => {
+        setInitLoadingModal(true)
+        const response: ResponseData = await getCustomerTypeById(id);
+        if (response && response.code === Code._200) {
+            const getCustomerTypeCurrent = response.data as CustomerTypeModel ?? {};
+            setCustomerTypeEdit(getCustomerTypeCurrent)
+            setInitLoadingModal(false)
+            setShowEditForm(true);
+        }
     };
 
     // searchForm
@@ -132,8 +159,8 @@ function CustomerType() {
             const fieldsValue = await searchForm.validateFields();
             setLoading(true)
             const filter = {
-                page: current,
-                size: pageSize,
+                pageNumber: current,
+                pageSize: pageSize,
                 textSearch: fieldsValue.TextSearch,
             }
             const response: ResponseData = await getCustomerType(
@@ -185,7 +212,7 @@ function CustomerType() {
             render: (_, record) => (
                 <Space>
                     <Permission noNode navigation={layoutCode.catalogCustomerType as string} bitPermission={PermissionAction.Edit}>
-                        <Button type="dashed" title='Cập nhật' loading={false} onClick={() => navigate(`/catalog/customer-type/edit/${record.id}`)}>
+                        <Button type="dashed" title='Cập nhật' loading={false} onClick={() => onHandleShowModalEdit(record.id||'')}>
                             <EditOutlined />
                         </Button>
                     </Permission>
@@ -207,24 +234,6 @@ function CustomerType() {
                 title={
                     <>
                         <Row gutter={16} justify='start'>
-                            <Col span={24} className='gutter-row' style={{ marginBottom: '8px' }}>
-                                <Space>
-                                    {/* <Permission noNode navigation={layoutCode.catalogBranch as string} bitPermission={PermissionAction.Add}>
-                                        <Button htmlType='button' type='default' onClick={() => onHandleShowModelCreate()}>
-                                            <PlusOutlined />
-                                            Tạo mới
-                                        </Button>
-                                    </Permission> */}
-                                    <Permission noNode navigation={layoutCode.catalogCustomerType as string} bitPermission={PermissionAction.Delete}>
-                                        {selectedRowDeleteKeys.length > 0 &&
-                                            <Button htmlType='button' danger loading={loadingDelete} type='dashed' onClick={() => multiDeleteRecord()}>
-                                                <DeleteOutlined />
-                                                Xóa
-                                            </Button>
-                                        }
-                                    </Permission>
-                                </Space>
-                            </Col>
                             <Col span={24} className='gutter-row'>
                                 <Collapse>
                                     <Panel header='Tìm kiếm' key='1'>
@@ -268,22 +277,6 @@ function CustomerType() {
                 }
                 extra={<div></div>}
             >
-                {/* <Table
-                    rowKey='id'
-                    columns={columns}
-                    dataSource={list}
-                    loading={loading}
-                    pagination={{
-                        ...pagination,
-                        onChange: (page: number, pageSize: number) => {
-                            getList(page, pageSize);
-                        },
-                    }}
-                    rowSelection={{
-                        selectedRowKeys: selectedRowDeleteKeys,
-                        onChange: (selectedRowKeys: React.Key[]) => setSelectedRowDeleteKeys(selectedRowKeys.map(value => value.toString()))
-                    }}
-                /> */}
 
                 <ProTable<CustomerTypeModel>
                     dataSource={list}
@@ -310,7 +303,22 @@ function CustomerType() {
                     ]}
                 />
             </Card>
-
+            {showCreateForm && (
+                <CreateCustomerType
+                    open={showCreateForm}
+                    setOpen={setShowCreateForm}
+                    reload={searchFormSubmit}
+                />
+            )}
+            {showEditForm && (
+                <EditCustomerType
+                    open={showEditForm}
+                    setOpen={setShowEditForm}
+                    reload={searchFormSubmit}
+                    customerTypeEdit={customerTypeEdit}
+                    initLoadingModal={initLoadingModal}
+                />
+            )}
         </div>
     );
 }

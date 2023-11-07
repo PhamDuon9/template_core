@@ -81,7 +81,7 @@ export const deleteDepartment = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getDepartment1 = (
+export const getDepartmentById = (
   id?: string,
   tenant?: string
 ): CancelablePromise<ResponseData> => {
@@ -128,7 +128,7 @@ export const putDepartment = (
  * @returns ResponseData Success
  * @throws ApiError
  */
-export const getDepartment2 = (
+export const getDepartmentTree = (
   tenant?: string
 ): CancelablePromise<ResponseData> => {
   return __request({
